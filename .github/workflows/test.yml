@@ -1,4 +1,4 @@
-name: Build Atlas docker image and tag version
+name: Build and push Docker image
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  build-atlas-image-and-tag-version:
+  build-push-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
