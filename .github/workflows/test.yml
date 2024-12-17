@@ -47,5 +47,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build --pull --rm -f "Dockerfile" --tag tnpatlas/atlas:v${{ github.event.inputs.version }} "."
+          docker build --pull --rm -f "Dockerfile" --tag specialkapa/test-workflow:v${{ github.event.inputs.version }} "."
           docker push specialkapa/test-workflow:v${{ github.event.inputs.version }}
