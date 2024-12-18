@@ -31,13 +31,8 @@ jobs:
       - name: Build wheels
         run: uv lock && uv build --wheel --out-dir dist
 
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          curl -fsSL https://get.docker.com -o get-devops_utils.sh
-          sudo sh get-devops_utils.sh
-          sudo usermod -aG docker $USER
-          sudo chmod 777 /var/run/docker.sock
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -46,6 +41,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PAT }}
 
       - name: Build and push Docker image
-        run: |
-          docker build --pull --rm -f "Dockerfile" --tag specialkapa/test-workflow:v${{ github.event.inputs.version }} "."
-          docker push specialkapa/test-workflow:v${{ github.event.inputs.version }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: specialkapa/test-workflow:v${{ github.event.inputs.version }}
