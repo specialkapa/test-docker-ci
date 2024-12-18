@@ -40,6 +40,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PAT }}
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
@@ -47,3 +50,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: specialkapa/test-workflow:v${{ github.event.inputs.version }}
+          cache-from: type=registry,ref=specialkapa/test-workflow:buildcache
+          cache-to: type=registry,ref=specialkapa/test-workflow:buildcache,mode=max
